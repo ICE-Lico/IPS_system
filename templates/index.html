@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>IPS日志建模结果展示</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .table-container {
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .report-container {
+            white-space: pre-wrap;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>IPS日志数据建模结果</h1>
+
+    <!-- 模型性能对比表 -->
+    <div class="table-container">
+        <h2>模型性能对比</h2>
+        {{ comparison_df|safe }}
+    </div>
+
+    <!-- 混淆矩阵可视化 -->
+    <div class="image-container">
+        <h2>混淆矩阵对比</h2>
+        <img src="data:image/png;base64,{{ confusion_matrix }}" alt="混淆矩阵">
+    </div>
+
+    <!-- 特征重要性图（XGBoost） -->
+    {% if feat_importance %}
+    <div class="image-container">
+        <h2>XGBoost特征重要性（Top10）</h2>
+        <img src="data:image/png;base64,{{ feat_importance }}" alt="特征重要性">
+    </div>
+    {% endif %}
+
+    <!-- 分类报告 -->
+    <div class="report-container">
+        <h2>XGBoost分类报告</h2>
+        {{ xgb_report }}
+    </div>
+    <div class="report-container">
+        <h2>随机森林分类报告</h2>
+        {{ rf_report }}
+    </div>
+    <div class="report-container">
+        <h2>逻辑回归分类报告</h2>
+        {{ lr_report }}
+    </div>
+</body>
+</html>
